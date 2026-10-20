@@ -18,8 +18,8 @@ Each topic has its own folder with:
 9. `A9_Hamming_Code_Error_Correction`
 
 ## Environment
-Windows 10/11, PowerShell, Python 3.10+ recommended. No pip packages are required.
-Check Python with `py --version`. If `py` is unavailable, try `python --version` and replace `py` with `python` in commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 ## Important
 - Run the server in one terminal and the client in another.

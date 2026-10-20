@@ -4,17 +4,17 @@
 Modify a TCP server so that it can handle multiple clients concurrently.
 
 ## Files
-- `concurrent_tcp_server.py` — starts a thread for each accepted connection.
-- `concurrent_tcp_client.py` — connects and sends one message.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py concurrent_tcp_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Then open Terminal 2 and Terminal 3 and run this in each:
 ```powershell
-py concurrent_tcp_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Enter a different message in each client.
 

@@ -4,19 +4,19 @@
 Implement checksum-based error detection and send the message/checksum to a receiver using sockets.
 
 ## Files
-- `error_client.py`
-- `error_server.py`
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 These files are shared with the CRC and Hamming topics. Run only one test at a time; restart the server before each test because it handles one request and exits.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py error_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py error_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Choose `1`, then enter a message.
 

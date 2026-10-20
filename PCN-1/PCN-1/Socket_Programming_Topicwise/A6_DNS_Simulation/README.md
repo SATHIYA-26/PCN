@@ -4,17 +4,17 @@
 Develop an application that simulates DNS using a database, name resolution and error handling for unknown domain names.
 
 ## Files
-- `dns_server.py` — holds a small domain-to-IP dictionary and answers UDP requests.
-- `dns_client.py` — sends a domain name and prints the result.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py dns_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py dns_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 
 Try:

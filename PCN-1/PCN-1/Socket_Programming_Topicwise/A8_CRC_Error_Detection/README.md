@@ -4,19 +4,19 @@
 Implement CRC-based error detection and exchange the CRC codeword through sockets.
 
 ## Files
-- `error_client.py`
-- `error_server.py`
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 These files are shared with checksum and Hamming. Restart the server before each test.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py error_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py error_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Choose `2`; enter data bits such as `1101` and generator bits such as `1011`.
 

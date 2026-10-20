@@ -4,17 +4,17 @@
 Implement a simple reliable data-transfer mechanism over UDP using sequence numbers, ACKs, a timeout and retransmission if an ACK is not received.
 
 ## Files
-- `reliable_udp_server.py`
-- `reliable_udp_client.py`
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py reliable_udp_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py reliable_udp_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 
 ## Expected output

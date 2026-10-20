@@ -4,19 +4,19 @@
 Develop a TCP client-server application. The client sends a message to the server, and the server replies.
 
 ## Files
-- `tcp_server.py` — listens, accepts one client, receives a message and replies.
-- `tcp_client.py` — connects, sends a message and prints the reply.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 ## Run on Windows PowerShell
 Open two terminals in this folder.
 
 Terminal 1:
 ```powershell
-py tcp_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py tcp_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 
 ## Expected output

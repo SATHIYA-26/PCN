@@ -4,19 +4,19 @@
 Implement Hamming code to detect and correct a single-bit error, and exchange the codeword through sockets.
 
 ## Files
-- `error_client.py`
-- `error_server.py`
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 These files are shared with checksum and CRC. Restart the server before each test.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py error_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py error_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Choose `3`, enter data bits such as `1011`, and enter a bit position to flip (for example, `3`). Enter `0` to leave the codeword unchanged.
 

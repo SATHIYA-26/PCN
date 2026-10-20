@@ -4,17 +4,17 @@
 Develop UDP client-server applications. The client sends a datagram and receives a reply.
 
 ## Files
-- `udp_server.py`
-- `udp_client.py`
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 
 ## Run on Windows PowerShell
 Terminal 1:
 ```powershell
-py udp_server.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 Terminal 2:
 ```powershell
-py udp_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 
 ## Expected output

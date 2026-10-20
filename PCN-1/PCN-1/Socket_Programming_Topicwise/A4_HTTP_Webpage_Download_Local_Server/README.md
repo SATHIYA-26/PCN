@@ -4,7 +4,7 @@
 Develop an HTTP client using TCP sockets to download a webpage from a local HTTP server.
 
 ## Files
-- `http_client.py` — the client implemented using Python sockets.
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 - `webroot/index.html` — the test webpage served locally (create this file as below).
 
 ## Setup
@@ -20,7 +20,7 @@ py -m http.server 8000 --directory webroot
 ```
 Terminal 2, from this same topic folder:
 ```powershell
-py http_client.py
+# See `C_VERSION_NOTES.md` for C compilation and run commands.
 ```
 
 ## Expected output
