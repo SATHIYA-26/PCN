@@ -1,0 +1,44 @@
+NS-3 TCP vs UDP — Quick Instructions
+=====================================
+
+Source node:      Node 0
+Destination node: Node 5
+
+1. SIMULATION PARAMETERS
+------------------------
+Link bandwidth:       2 Mbps
+Link delay:           10 ms
+Queue discipline:     DropTail
+Queue size:            50 packets
+Packet size:           1024 bytes
+UDP data rate:         4 Mbps
+Simulation time:       10 seconds
+
+2. RUN THE SIMULATION
+---------------------
+Open a terminal in the NS-3 root directory and run:
+
+    ./ns3 run "scratch/tcp-udp-analysis --bandwidth=2Mbps --linkDelay=10ms --queueSize=50 --packetSize=1024 --udpRate=4Mbps --simTime=10"
+
+The C++ code must define these command-line parameters and configure Node 0
+as the source and Node 5 as the destination, with valid connectivity and routing.
+
+3. GENERATE THE GRAPHS
+----------------------
+After the simulation finishes, run:
+
+    python3 plot_results.py
+
+4. OUTPUT
+---------
+The simulation creates tcp_udp_results.csv.
+The Python script generates graphs comparing TCP and UDP for:
+- Throughput (Mbps)
+- Packet loss (%)
+- Packet delivery ratio (%)
+- Transmission ratio (%)
+- End-to-end delay (ms)
+
+If pandas or matplotlib is missing, install them with:
+
+    python3 -m pip install pandas matplotlib
