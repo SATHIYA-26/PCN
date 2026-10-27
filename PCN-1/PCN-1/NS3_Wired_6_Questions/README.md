@@ -1,26 +1,236 @@
-# NS-3 Wired — 6 Practice Questions
+# NS-3 Wired Network Simulation — W1, W2 & W3
 
-Each question has its own folder, C++ file, README with run instructions, metrics and viva questions.
+## Overview
 
-## Folder map
-1. `W1_Multi_Node_Topology` — multi-node wired topology, IP addressing and global routing
-2. `W2_TCP_UDP_Packet_Tracing` — TCP/UDP flows and PCAP packet tracing
-3. `W3_Performance_Metrics` — throughput, delay, loss and FlowMonitor
-4. `W4_Vary_Network_Parameters` — vary bandwidth, queue size and delay
-5. `W5_Routing_Link_Failure` — global-routing link-failure demonstration
-6. `W6_TCP_Congestion_Control` — selectable TCP controller, if available in the installed NS-3 version
+This project simulates a wired computer network using **NS-3 and C++**. It demonstrates network topology creation, IP addressing, routing, TCP/UDP communication, packet tracing and network performance analysis.
 
-## General run procedure
-- Use a compatible installed NS-3 source tree.
-- Copy the `.cc` file for one question into the NS-3 `scratch/` folder.
-- Open a terminal in the NS-3 root folder.
-- Run the exact command in that question's README, for example `./ns3 run scratch/wired_simulation`.
-- On Windows, NS-3 is commonly run through a Linux environment/WSL; the launcher may be `./ns3` inside the NS-3 directory.
+## Network Configuration
 
-## Important notes
-- These are separate practice programs, not six entirely different topologies. W1–W4 deliberately reuse the same base topology so you can learn one program and vary parameters.
-- The default routed topology follows the user's prior lab assignment: four end hosts and two routers; 10 Mbps / 2 ms access links; 2 Mbps / 10 ms bottleneck; 50-packet DropTail queue; 20 seconds; TCP 1024 bytes and UDP 512 bytes at 1 Mbps.
-- FlowMonitor gives flow-level counters, throughput and delay. PCAP is for packet-level inspection.
-- TCP retransmissions are not directly counted by the FlowMonitor output in these examples; inspect TCP packet traces. Do not report `Tx - Rx` as a precise retransmission count.
-- OSPF is not supplied as a general built-in protocol in every NS-3 setup. W5 is explicitly a global-routing interface-failure demonstration, not OSPF. Use only protocol modules actually available in your NS-3 version.
-- TCP Cubic/BBR availability depends on the NS-3 version/build; W6 checks whether the requested TypeId exists.
+- **Nodes:** 6 (4 end hosts and 2 routers)
+- **Point-to-point links:** 5
+- **Access link rate:** 10 Mbps
+- **Access link delay:** 2 ms
+- **Bottleneck link rate:** 2 Mbps
+- **Bottleneck link delay:** 10 ms
+- **Queue discipline:** DropTail
+- **Queue size:** 50 packets
+- **TCP packet size:** 1024 bytes
+- **UDP packet size:** 512 bytes
+- **UDP data rate:** 1 Mbps
+- **Simulation duration:** 20 seconds
+
+## Node Roles
+
+| Node | Role |
+|---|---|
+| Node 0 | TCP sender |
+| Node 1 | UDP sender |
+| Node 2 | UDP receiver |
+| Node 3 | TCP receiver |
+| Node 4 | Router |
+| Node 5 | Router |
+
+## Workflow
+
+### 1. Create Nodes
+
+Create six nodes using `NodeContainer`.
+
+```cpp
+NodeContainer nodes;
+nodes.Create(6);
+```
+
+### 2. Create Point-to-Point Links
+
+Use `PointToPointHelper` to connect the required pairs of nodes.
+
+```cpp
+PointToPointHelper p2p;
+
+p2p.SetDeviceAttribute(
+    "DataRate", StringValue("10Mbps"));
+
+p2p.SetChannelAttribute(
+    "Delay", StringValue("2ms"));
+```
+
+Install the links using `p2p.Install(nodeA, nodeB)`. Repeat for all five connections, configuring the bottleneck link separately.
+
+### 3. Configure the Bottleneck and Queue
+
+```cpp
+PointToPointHelper bottleneck;
+
+bottleneck.SetDeviceAttribute(
+    "DataRate", StringValue("2Mbps"));
+
+bottleneck.SetChannelAttribute(
+    "Delay", StringValue("10ms"));
+
+bottleneck.SetQueue(
+    "ns3::DropTailQueue<Packet>",
+    "MaxSize", QueueSizeValue(QueueSize("50p")));
+```
+
+### 4. Install the Internet Stack
+
+Install networking protocols on all six nodes.
+
+```cpp
+InternetStackHelper internet;
+internet.Install(nodes);
+```
+
+### 5. Assign IP Addresses
+
+Use `Ipv4AddressHelper` to assign a different subnet to each point-to-point link.
+
+```cpp
+Ipv4AddressHelper address;
+
+address.SetBase(
+    "10.1.1.0", "255.255.255.0");
+
+NetDeviceContainer devices = p2p.Install(
+    nodes.Get(0), nodes.Get(4));
+
+Ipv4InterfaceContainer interfaces =
+    address.Assign(devices);
+```
+
+Repeat the addressing process for each link, using a unique subnet each time.
+
+### 6. Configure Global Routing
+
+Populate the routing tables so packets can travel across connected networks.
+
+```cpp
+Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+```
+
+Nodes 4 and 5 act as routers by forwarding packets between their connected networks.
+
+### 7. Configure TCP and UDP Applications
+
+Configure sender and receiver applications using helpers such as:
+
+- `PacketSinkHelper` — receives traffic.
+- `OnOffHelper` — generates traffic.
+- `InetSocketAddress` — specifies the destination IP address and port.
+
+Use TCP for traffic from Node 0 to Node 3 and UDP for traffic from Node 1 to Node 2. Configure packet sizes, data rates, ports and application start/stop times.
+
+### 8. Enable FlowMonitor and PCAP
+
+FlowMonitor collects flow-level statistics.
+
+```cpp
+FlowMonitorHelper flowHelper;
+
+Ptr<FlowMonitor> monitor =
+    flowHelper.InstallAll();
+```
+
+Enable packet capture on the required bottleneck devices using `EnablePcap()`.
+
+### 9. Run the Simulation
+
+```cpp
+Simulator::Stop(Seconds(20.0));
+Simulator::Run();
+```
+
+### 10. Analyze Results
+
+Use FlowMonitor statistics to analyze:
+
+- Transmitted and received packets
+- Estimated packet loss
+- Throughput
+- Average end-to-end delay
+- Jitter sum
+
+Save the FlowMonitor report as XML and inspect PCAP files using Wireshark to examine individual packets and TCP retransmissions.
+
+### 11. Destroy the Simulator
+
+```cpp
+Simulator::Destroy();
+```
+
+## Performance Metrics
+
+**Throughput**
+
+Throughput is the amount of successfully received data per unit of time.
+
+\[
+\text{Throughput (Mbps)}
+=
+\frac{\text{Received bytes}\times 8}
+{\text{Measurement time}\times 10^6}
+\]
+
+**Packet Loss Percentage**
+
+\[
+\text{Loss (\%)}
+=
+\frac{Tx-Rx}{Tx}\times100
+\]
+
+This simple formula is an estimate when transmitted and received packet counts are comparable for the same flow and measurement interval.
+
+**Average End-to-End Delay**
+
+\[
+\text{Average Delay}
+=
+\frac{\text{Total packet delay}}
+{\text{Received packets}}
+\]
+
+## Run the Program
+
+Place `wired_simulation.cc` in the NS-3 `scratch/` directory.
+
+From the NS-3 root directory, run:
+
+```bash
+./ns3 run scratch/wired_simulation
+```
+
+Example parameter variations, if supported by the source code:
+
+```bash
+./ns3 run "scratch/wired_simulation --bottleneckRate=5Mbps"
+
+./ns3 run "scratch/wired_simulation --queueSize=100p"
+
+./ns3 run "scratch/wired_simulation --bottleneckDelay=20ms"
+
+./ns3 run "scratch/wired_simulation --udpRateMbps=2"
+```
+
+## Output Files
+
+- `wired-flowmon.xml` — FlowMonitor statistics.
+- `wired-bottleneck-*.pcap` — packet captures, if tracing is enabled.
+- Terminal output — flow summaries and performance metrics.
+
+## Experiment Mapping
+
+- **W1:** Multi-node topology, IP addressing and routing.
+- **W2:** TCP/UDP traffic generation and packet-level tracing.
+- **W3:** Throughput, delay, packet loss and FlowMonitor analysis.
+
+A common implementation can cover all three experiments when it includes the required features.
+
+## Notes
+
+- The topology and link connections must match the experiment specification.
+- Use unique IP subnets for each point-to-point link.
+- TCP retransmissions are not directly counted by a dedicated FlowMonitor retransmission counter; inspect PCAP or TCP traces.
+- Actual performance results depend on the topology, traffic settings and NS-3 version.
+- The code snippets above illustrate the workflow; integrate them with the complete source file and verify helper APIs against your installed NS-3 version.
